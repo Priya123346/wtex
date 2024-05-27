@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 const MyContext = React.createContext("qwert");
 
@@ -19,7 +19,7 @@ const ComponentWithContext = () => {
   };
 
 const HooksExample = () => {
-  
+    const inputRef = useRef(null);
   const [count, setCount] = useState(0);
 
   
@@ -29,6 +29,11 @@ const HooksExample = () => {
   }, [count]); 
 
  
+  const handleFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
   const valueFromContext = useContext(MyContext);
   
 
@@ -39,6 +44,8 @@ const HooksExample = () => {
       <button onClick={() => setCount(count + 1)}>Increment</button>
       <br />
       <br />
+      <input ref={inputRef} type="text" placeholder="Focus me with button" />
+      <button onClick={handleFocus}>Focus Input</button>
       
       <MyContextProvider>
         <ComponentWithContext />
@@ -46,8 +53,7 @@ const HooksExample = () => {
       </MyContextProvider>
       <ComponentWithContext2 />
       <p>Value from context: {valueFromContext}</p>
-      
-      
+    
     </div>
   );
 };
